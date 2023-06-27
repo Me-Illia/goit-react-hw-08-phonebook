@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button, Form, Input, Label } from 'components/RegisterForm/RegisterForm.styled';
 import Section from 'components/Section/Section';
 import { useDispatch } from 'react-redux';
@@ -5,17 +6,34 @@ import { logIn } from 'redux/auth/authOperations';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    const form = e.currentTarget;
     dispatch(
       logIn({
-        email: form.elements.email.value,
-        password: form.elements.password.value,
+        email: email,
+        password: password,
       })
     );
-    form.reset();
+    setEmail('');
+    setPassword('');
+  };
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      default:
+        return;
+    }
   };
 
   return (
@@ -23,11 +41,11 @@ const LoginForm = () => {
       <Form onSubmit={handleSubmit} autoComplete="off">
         <Label>
           Email
-          <Input type="email" name="email" />
+          <Input type="email" name="email" value={email} onChange={handleChange} />
         </Label>
         <Label>
           Password
-          <Input type="password" name="password" />
+          <Input type="password" name="password" value={password} onChange={handleChange} />
         </Label>
         <Button type="submit">Log In</Button>
       </Form>
