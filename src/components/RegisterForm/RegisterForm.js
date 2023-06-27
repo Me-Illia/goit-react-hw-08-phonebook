@@ -12,7 +12,6 @@ const RegisterForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const form = e.currentTarget;
     dispatch(
       register({
         name: name,
